@@ -1,0 +1,45 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+df = pd.read_csv("/content/student dataset.csv")
+
+print("\nDataset Preview:\n")
+print(df.head())
+
+X = df[["StudyHours", "Attendance", "PreviousMarks"]]
+y = df["FinalMarks"]
+
+# Create and train model
+model = LinearRegression()
+model.fit(X, y)
+
+study = float(input("\nEnter Study Hours: "))
+attendance = float(input("Enter Attendance (%): "))
+previous = float(input("Enter Previous Marks: "))
+
+
+if study < 0 or attendance < 0 or previous < 0:
+    print("\nInvalid input! Values cannot be negative.")
+else:
+    # Predict result
+    prediction = model.predict([[study, attendance, previous]])
+    marks = round(prediction[0], 2)
+
+    # Grade system
+    if marks >= 85:
+        grade = "A"
+    elif marks >= 70:
+        grade = "B"
+    elif marks >= 50:
+        grade = "C"
+    else:
+        grade = "Fail"
+
+    print("\nPredicted Final Marks:", marks)
+    print("Grade:", grade)
+
+    # Small suggestion
+    if study < 3:
+        print("Tip: Increase study hours to improve performance.")
+    if attendance < 75:
+        print("Tip: Maintain good attendance.")
